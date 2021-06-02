@@ -32,7 +32,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter implements WebM
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/test/**").permitAll().anyRequest().authenticated().and()
+        http.cors().and().csrf().disable().authorizeRequests().antMatchers("/test/**", "/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll().anyRequest().authenticated().and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.addFilterBefore(googleIdTokenAuthorizationFilter, UsernamePasswordAuthenticationFilter.class);
     }
