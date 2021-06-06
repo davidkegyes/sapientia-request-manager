@@ -6,7 +6,7 @@ import org.springframework.web.multipart.MultipartFile;
 @Data
 public class RequestAttachmentRequest {
 
-    private String referenceNumber;
+    private String requestReferenceNumber;
     private String name;
     private MultipartFile file;
 

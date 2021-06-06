@@ -1,7 +1,6 @@
 package edu.sapientia.requestmanager.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
-import edu.sapientia.requestmanager.repository.converter.RequestTemplateDocumentJpaJsonConverter;
 import edu.sapientia.requestmanager.repository.converter.RequestTemplateFormJpaJsonConverter;
 import lombok.Data;
 
@@ -21,22 +20,18 @@ public class RequestTemplate implements Serializable {
     private String name;
     private String description;
     private String language;
-    private int totalDocuments;
 
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    @Convert(converter = RequestTemplateDocumentJpaJsonConverter.class)
-    private List<Document> upload;
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "request_template_attachment_name",
+            joinColumns = {@JoinColumn(name = "request_template_id")},
+            inverseJoinColumns = {@JoinColumn(name = "attachment_name_id")}
+    )
+    private List<RequestAttachment> attachmentList;
+
     @JsonInclude(JsonInclude.Include.NON_NULL)
     @Convert(converter = RequestTemplateFormJpaJsonConverter.class)
     private List<FormPart> form;
-
-    @Data
-    @JsonInclude(JsonInclude.Include.NON_NULL)
-    public static class Document {
-        private String name;
-        private String accept;
-        private String value;
-    }
 
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)

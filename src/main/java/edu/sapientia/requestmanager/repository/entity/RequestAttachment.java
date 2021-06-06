@@ -2,36 +2,26 @@ package edu.sapientia.requestmanager.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
 import javax.persistence.*;
-import java.io.Serializable;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "attachment_type")
 @JsonInclude(JsonInclude.Include.NON_NULL)
-public class RequestAttachment implements Serializable {
+public class RequestAttachment {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long userId;
-
-    private String referenceNumber;
-
     private String name;
 
-    private String type;
-
-    private boolean requestUpload;
-
-    @CreationTimestamp
-    private LocalDateTime uploadDateTime;
-
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] attachment;
-
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinTable(
+            name = "attachment_type_format",
+            joinColumns = {@JoinColumn(name = "name_id")},
+            inverseJoinColumns = {@JoinColumn(name = "accept_type_id")}
+    )
+    private List<AcceptedDocumentFormat> formatList;
 }

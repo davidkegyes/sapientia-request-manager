@@ -1,28 +1,17 @@
 package edu.sapientia.requestmanager.model.response;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.Data;
-import org.hibernate.annotations.CreationTimestamp;
 
-import javax.persistence.Column;
-import javax.persistence.Lob;
-import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
+@JsonInclude(JsonInclude.Include.NON_NULL)
 public class RequestAttachmentResponse {
 
     private Long id;
 
-    private String referenceNumber;
-
     private String name;
 
-    private String type;
-
-    @CreationTimestamp
-    private LocalDateTime uploadDateTime;
-
-    @Lob
-    @Column(columnDefinition = "BLOB")
-    private byte[] attachment;
-
+    private List<String> accept;
 }

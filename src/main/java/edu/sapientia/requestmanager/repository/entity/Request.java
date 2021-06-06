@@ -1,7 +1,9 @@
 package edu.sapientia.requestmanager.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import edu.sapientia.requestmanager.model.RequestStatus;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -9,14 +11,41 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
-@Entity
+@Entity(name = "Request")
+@Table(name = "request")
+@IdClass(RequestId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
+@EqualsAndHashCode
 public class Request implements Serializable {
 
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Id
+    @Column(name = "id")
+//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+
+    @OneToOne
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @Id
+    @GeneratedValue(generator = "UUID")
+    @GenericGenerator(
+            name = "UUID",
+            strategy = "org.hibernate.id.UUIDGenerator"
+    )
+    @Column(name = "reference_number")
+    private String referenceNumber;
+
+    private String officialReferenceNumber;
+
+    private String name;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private RequestStatus status = RequestStatus.NEW;
 
     @CreationTimestamp
     private LocalDateTime createDateTime;
@@ -24,25 +53,12 @@ public class Request implements Serializable {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-    @Id
-    @GeneratedValue(generator = "requestRegistryNumberGenerator")
-    @GenericGenerator(name = "requestRegistryNumberGenerator", strategy = "edu.sapientia.requestmanager.generator.RequestRegistryNumberGenerator")
-    private String referenceNumber;
-
-    private String name;
-
-    private String json;
-
     private String documentType;
-
-    private String status;
 
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] document;
 
-    @OneToOne
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String json;
 
 }

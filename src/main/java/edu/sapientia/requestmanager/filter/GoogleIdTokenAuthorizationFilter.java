@@ -73,19 +73,15 @@ public class GoogleIdTokenAuthorizationFilter extends OncePerRequestFilter {
         user.setFirstname((String) payload.get("given_name"));
         user.setLastname((String) payload.get("family_name"));
         Role role = getRole(user.getEmail());
-        if (role == null){
-            return;
-        }
         user.setRoles(Collections.singleton(role));
         userService.saveUser(user);
     }
 
     private Role getRole(String email){
-        if (email.toLowerCase().substring(email.indexOf("@") + 1).startsWith("student")){
-            return roleService.findByName("student");
+        if (!email.toLowerCase().substring(email.indexOf("@") + 1).startsWith("student")){
+            log.info(email + " is not student!");
         }
-        log.warn("Can not determine user role for email: " + email);
-        return null;
+        return roleService.findByName("student");
     }
 
 

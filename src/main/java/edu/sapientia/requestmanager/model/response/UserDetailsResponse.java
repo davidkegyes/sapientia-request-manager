@@ -13,5 +13,4 @@ public class UserDetailsResponse implements Serializable {
     private String firstname;
     private String lastname;
     private Set<String> permissions;
-
 }

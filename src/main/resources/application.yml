@@ -1,9 +1,5 @@
 server:
   port: 8181
-google:
-  oauth2:
-    client-id: 746309681103-5jb4g12c5kn08olp6j5ck7v5bm9630ve.apps.googleusercontent.com
-
 spring:
   config:
     activate:
@@ -19,7 +15,9 @@ spring:
     properties:
       hibernate:
         format_sql: true
-
+google:
+  oauth2:
+    client-id: 746309681103-5jb4g12c5kn08olp6j5ck7v5bm9630ve.apps.googleusercontent.com
 ---
 server:
   port: 80
