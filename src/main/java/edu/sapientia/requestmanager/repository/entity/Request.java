@@ -11,7 +11,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
-import java.util.List;
 
 @Data
 @Entity(name = "Request")
@@ -23,7 +22,6 @@ public class Request implements Serializable {
 
     @Id
     @Column(name = "id")
-//    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     @OneToOne

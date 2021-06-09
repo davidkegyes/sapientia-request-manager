@@ -1,7 +1,7 @@
 package edu.sapientia.requestmanager.service;
 
 import edu.sapientia.requestmanager.repository.entity.Attachment;
-import edu.sapientia.requestmanager.repository.entity.AttachmentRepository;
+import edu.sapientia.requestmanager.repository.AttachmentRepository;
 import lombok.Data;
 import org.springframework.stereotype.Service;
 
@@ -13,7 +13,7 @@ public class AttachmentService {
 
     private final AttachmentRepository attachmentRepository;
 
-    public void attachDocumentToRequest(String requestReferenceNumber, String documentName, String documentType, byte[] document){
+    public void attachDocumentToRequest(String requestReferenceNumber, String documentName, String documentType, byte[] document) {
         Attachment attachment = new Attachment();
         attachment.setValue(document);
         attachment.setName(documentName);
@@ -22,7 +22,12 @@ public class AttachmentService {
         attachmentRepository.save(attachment);
     }
 
-    public List<Attachment> getAttachmentListForReference(String requestReferenceNumber){
+    public List<Attachment> getAttachmentListForReference(String requestReferenceNumber) {
         return attachmentRepository.getAttachmentByRequestReferenceNumber(requestReferenceNumber);
+    }
+
+    public void deleteAttachment(String uuid) {
+        attachmentRepository.deleteByUuid(uuid);
+
     }
 }

@@ -29,4 +29,10 @@ public class AttachmentController {
     public ResponseEntity getAttachmentList(@PathVariable String referenceNumber) {
         return ResponseEntity.ok(attachmentService.getAttachmentListForReference(referenceNumber));
     }
+
+    @DeleteMapping("/{uuid}")
+    public ResponseEntity delete(@PathVariable String uuid) {
+        attachmentService.deleteAttachment(uuid);
+        return ResponseEntity.noContent().build();
+    }
 }

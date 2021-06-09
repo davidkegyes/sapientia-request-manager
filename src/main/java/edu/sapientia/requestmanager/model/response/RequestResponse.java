@@ -33,7 +33,4 @@ public class RequestResponse {
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] document;
-
-    private boolean official;
-
 }
