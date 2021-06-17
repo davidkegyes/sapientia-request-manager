@@ -5,15 +5,15 @@ import edu.sapientia.requestmanager.model.RequestStatus;
 import edu.sapientia.requestmanager.model.request.RequestRequest;
 import edu.sapientia.requestmanager.repository.RequestAttachmentRepository;
 import edu.sapientia.requestmanager.repository.RequestRepository;
-import edu.sapientia.requestmanager.repository.entity.Attachment;
 import edu.sapientia.requestmanager.repository.entity.Request;
+import edu.sapientia.requestmanager.repository.entity.RequestAttachmentRequest;
 import edu.sapientia.requestmanager.repository.entity.User;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -54,27 +54,6 @@ public class RequestService {
         return requestRepository.save(request).getReferenceNumber();
     }
 
-//    public void saveDocument(Long userId, String refNumber, String name, String type, byte[] bytes) {
-//
-//        if (Math.random() > 0.3) {
-//            throw new RuntimeException("Test");
-//        }
-//        Request request = requestRepository.findByUserIdAndReferenceNumberOrOfficialReferenceNumber(userId, refNumber);
-//        if (request.getAttachmentList() == null) {
-//            request.setAttachmentList(new ArrayList<>());
-//        }
-//        Attachment document = new Attachment();
-//        document.setReferenceNumber(refNumber);
-//        document.setName(name);
-//        document.setType(type);
-//        document.setValue(bytes);
-////        document.setUserId(request.getUser().getId());
-////        document.setRequestId(request.getId());
-//
-//        request.getAttachmentList().add(document);
-//        requestRepository.save(request);
-//    }
-
     public List<Request> getRequestsByUserId(Long id) {
         return requestRepository.findAllByUserIdOrderByReferenceNumberDesc(id);
     }
@@ -87,16 +66,9 @@ public class RequestService {
         return requestRepository.findByUserIdAndReferenceNumberOrOfficialReferenceNumber(userId, referenceNumber);
     }
 
-    public List<Attachment> getRequestAttachmentList(Long userId, String referenceNumber) {
-        return new ArrayList<>();
-//        return attachmentRepository.findByUserIdAndReferenceNumber(userId, referenceNumber);
-    }
-
-    public void requestUpload(String referenceNumber, String documentName) {
-        // TODO hook in JMS
-        Attachment attachment = new Attachment();
-        attachment.setName(documentName);
-        attachment.setRequestReferenceNumber(referenceNumber);
-        attachmentRepository.save(attachment);
+    public void requestAttachmentUpload(String referenceNumber, List<String> requestedAttachmentList) {
+        Request request = requestRepository.findByReferenceNumber(referenceNumber);
+        request.setAttachmentRequestList(requestedAttachmentList.stream().map(s -> new RequestAttachmentRequest(null, referenceNumber, s)).collect(Collectors.toList()));
+        requestRepository.save(request);
     }
 }

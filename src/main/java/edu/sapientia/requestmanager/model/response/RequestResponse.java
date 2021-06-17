@@ -10,6 +10,7 @@ import org.springframework.util.StringUtils;
 import javax.persistence.Column;
 import javax.persistence.Lob;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class RequestResponse {
@@ -28,9 +29,12 @@ public class RequestResponse {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
+    private List<String> attachmentRequestList;
+
     private String documentType;
 
     @Lob
     @Column(columnDefinition = "BLOB")
     private byte[] document;
+
 }

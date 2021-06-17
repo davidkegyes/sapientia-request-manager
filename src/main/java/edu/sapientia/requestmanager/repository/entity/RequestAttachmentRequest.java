@@ -1,11 +1,15 @@
 package edu.sapientia.requestmanager.repository.entity;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Data
 @Entity
+@NoArgsConstructor
+@AllArgsConstructor
 public class RequestAttachmentRequest {
 
     @Id
@@ -13,12 +17,8 @@ public class RequestAttachmentRequest {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    private Long requestId;
-
     private String referenceNumber;
 
-    @OneToOne
-    @JoinColumn(name = "attachment_type_id")
-    private RequestAttachment requestAttachment;
+    private String name;
 
 }

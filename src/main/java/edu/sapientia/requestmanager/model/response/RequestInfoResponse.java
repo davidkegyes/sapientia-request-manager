@@ -3,6 +3,7 @@ package edu.sapientia.requestmanager.model.response;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 public class RequestInfoResponse {
@@ -14,6 +15,8 @@ public class RequestInfoResponse {
     private String name;
 
     private String status;
+
+    private List<String> attachmentRequestList;
 
     private LocalDateTime createDateTime;
 

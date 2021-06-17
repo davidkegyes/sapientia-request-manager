@@ -11,16 +11,17 @@ import org.hibernate.annotations.UpdateTimestamp;
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Data
 @Entity(name = "Request")
 @Table(name = "request")
-@IdClass(RequestId.class)
+//@IdClass(RequestId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode
 public class Request implements Serializable {
 
-    @Id
+//    @Id
     @Column(name = "id")
     private Long id;
 
@@ -59,4 +60,7 @@ public class Request implements Serializable {
 
     private String json;
 
+    @OneToMany(fetch = FetchType.EAGER)
+    @JoinColumn(name = "referenceNumber")
+    private List<RequestAttachmentRequest> attachmentRequestList;
 }
