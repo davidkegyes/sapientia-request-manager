@@ -2,6 +2,7 @@ package edu.sapientia.requestmanager.repository.entity;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import edu.sapientia.requestmanager.model.RequestStatus;
+import edu.sapientia.requestmanager.repository.converter.StringListJpaJsonConverter;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import org.hibernate.annotations.CreationTimestamp;
@@ -58,9 +59,10 @@ public class Request implements Serializable {
     @Column(columnDefinition = "BLOB")
     private byte[] document;
 
-    private String json;
+    private String form;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    @JoinColumn(name = "referenceNumber")
-    private List<RequestAttachmentRequest> attachmentRequestList;
+    @JsonInclude(JsonInclude.Include.NON_NULL)
+    @Convert(converter = StringListJpaJsonConverter.class)
+    private List<String> requiredDocuments;
+
 }

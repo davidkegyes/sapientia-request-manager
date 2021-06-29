@@ -16,7 +16,7 @@ public class RequestInfoResponse {
 
     private String status;
 
-    private List<String> attachmentRequestList;
+    private List<String> requiredDocuments;
 
     private LocalDateTime createDateTime;
 

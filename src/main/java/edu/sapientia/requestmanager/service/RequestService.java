@@ -48,7 +48,7 @@ public class RequestService {
         user.setId(userId);
         request.setUser(user);
         request.setName(res.getName());
-        request.setJson(res.getJson());
+        request.setForm(res.getForm());
         request.setDocument(res.getFile().getBytes());
         request.setDocumentType(res.getFile().getContentType());
         return requestRepository.save(request).getReferenceNumber();
@@ -67,8 +67,8 @@ public class RequestService {
     }
 
     public void requestAttachmentUpload(String referenceNumber, List<String> requestedAttachmentList) {
-        Request request = requestRepository.findByReferenceNumber(referenceNumber);
-        request.setAttachmentRequestList(requestedAttachmentList.stream().map(s -> new RequestAttachmentRequest(null, referenceNumber, s)).collect(Collectors.toList()));
-        requestRepository.save(request);
+//        Request request = requestRepository.findByReferenceNumber(referenceNumber);
+//        request.setAttachmentRequestList(requestedAttachmentList.stream().mapToResponse(s -> new RequestAttachmentRequest(null, referenceNumber, s)).collect(Collectors.toList()));
+//        requestRepository.save(request);
     }
 }

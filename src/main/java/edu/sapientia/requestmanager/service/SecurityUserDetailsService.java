@@ -21,7 +21,7 @@ public class SecurityUserDetailsService implements UserDetailsService {
     }
 
 //    private Collection<? extends GrantedAuthority> getAuthorities(Collection<Role> roles) {
-//        return roles.stream().flatMap(r -> r.getPermissions().stream()).map(p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
+//        return roles.stream().flatMap(r -> r.getPermissions().stream()).mapToResponse(p -> new SimpleGrantedAuthority(p.getName())).collect(Collectors.toList());
 //    }
 
 

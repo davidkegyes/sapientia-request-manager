@@ -29,7 +29,7 @@ public class RequestResponse {
     @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-    private List<String> attachmentRequestList;
+//    private List<String> attachmentRequestList;
 
     private String documentType;
 

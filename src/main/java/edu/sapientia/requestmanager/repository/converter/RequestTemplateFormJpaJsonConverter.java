@@ -8,13 +8,14 @@ import javax.persistence.AttributeConverter;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RequestTemplateFormJpaJsonConverter implements AttributeConverter<ArrayList<RequestTemplate.FormPart>, String> {
+public class RequestTemplateFormJpaJsonConverter implements AttributeConverter<List<RequestTemplate.FormPart>, String> {
 
     static ObjectMapper mapper = new ObjectMapper();
 
+    @SneakyThrows
     @Override
-    public String convertToDatabaseColumn(ArrayList<RequestTemplate.FormPart> attribute) {
-        return null;
+    public String convertToDatabaseColumn(List<RequestTemplate.FormPart> attribute) {
+        return mapper.writeValueAsString(attribute);
     }
 
     @SneakyThrows

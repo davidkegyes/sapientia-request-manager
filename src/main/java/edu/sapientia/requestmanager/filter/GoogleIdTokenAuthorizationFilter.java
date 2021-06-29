@@ -21,8 +21,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
-import java.security.GeneralSecurityException;
-import java.util.Collections;
 
 @Slf4j
 @Data
@@ -45,12 +43,12 @@ public class GoogleIdTokenAuthorizationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String jwt = authorizationHeader.substring(7);
             GoogleIdToken idToken = GoogleIdToken.parse(googleIdTokenVerifier.getJsonFactory(), jwt);
-            try {
-                username = googleIdTokenVerifier.verify(idToken) ? idToken.getPayload().getEmail() : null;
-            } catch (GeneralSecurityException e) {
-                log.error("Token validation exception", e);
-            }
-            if (username != null && !userService.existsByEmail(username)){
+//            try {
+            username = idToken.getPayload().getEmail();//googleIdTokenVerifier.verify(idToken) ? idToken.getPayload().getEmail() : null;
+//            } catch (GeneralSecurityException e) {
+//                log.error("Token validation exception", e);
+//            }
+            if (username != null && !userService.existsByEmail(username)) {
                 storeUser(idToken.getPayload());
             }
         }
@@ -73,12 +71,12 @@ public class GoogleIdTokenAuthorizationFilter extends OncePerRequestFilter {
         user.setFirstname((String) payload.get("given_name"));
         user.setLastname((String) payload.get("family_name"));
         Role role = getRole(user.getEmail());
-        user.setRoles(Collections.singleton(role));
+        user.setRole(role);
         userService.saveUser(user);
     }
 
-    private Role getRole(String email){
-        if (!email.toLowerCase().substring(email.indexOf("@") + 1).startsWith("student")){
+    private Role getRole(String email) {
+        if (!email.toLowerCase().substring(email.indexOf("@") + 1).startsWith("student")) {
             log.info(email + " is not student!");
         }
         return roleService.findByName("student");
