@@ -26,4 +26,5 @@ public class GlobalExceptionHandler extends ResponseEntityExceptionHandler {
                         .exception(e)
                         .build(), new HttpHeaders(), HttpStatus.BAD_REQUEST, request);
     }
+
 }

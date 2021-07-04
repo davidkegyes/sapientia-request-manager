@@ -1,7 +1,7 @@
 package edu.sapientia.requestmanager.mapper;
 
 import edu.sapientia.requestmanager.model.request.UserRequest;
-import edu.sapientia.requestmanager.model.response.UserResponse;
+import edu.sapientia.requestmanager.model.response.UserDetailsResponse;
 import edu.sapientia.requestmanager.model.security.AuthorizedUser;
 import edu.sapientia.requestmanager.repository.entity.User;
 import org.mapstruct.Mapper;
@@ -13,10 +13,10 @@ import org.springframework.stereotype.Service;
 @Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {RoleMapper.class})
 public interface UserMapper {
 
-    UserResponse mapToResponse(AuthorizedUser user);
+    UserDetailsResponse mapToResponse(AuthorizedUser user);
 
     @Mapping(target = "role.id", source = "roleId")
     User mapRequestToEntity(UserRequest user);
 
-    UserResponse mapEntityToResponse(User user);
+    UserDetailsResponse mapEntityToResponse(User user);
 }

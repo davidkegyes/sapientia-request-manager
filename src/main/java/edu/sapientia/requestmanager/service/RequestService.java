@@ -5,15 +5,14 @@ import edu.sapientia.requestmanager.model.RequestStatus;
 import edu.sapientia.requestmanager.model.request.RequestRequest;
 import edu.sapientia.requestmanager.repository.RequestAttachmentRepository;
 import edu.sapientia.requestmanager.repository.RequestRepository;
+import edu.sapientia.requestmanager.repository.UserRepository;
 import edu.sapientia.requestmanager.repository.entity.Request;
-import edu.sapientia.requestmanager.repository.entity.RequestAttachmentRequest;
 import edu.sapientia.requestmanager.repository.entity.User;
 import lombok.Data;
 import lombok.SneakyThrows;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Data
 @Service
@@ -27,17 +26,21 @@ public class RequestService {
 
     private final RequestMapper requestMapper;
 
-    public String approveRequest(String referenceNumber) {
-        Request request = requestRepository.findByReferenceNumber(referenceNumber);
-        request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
-        request.setStatus(RequestStatus.APPROVED);
-        return requestRepository.save(request).getOfficialReferenceNumber();
+    private final UserRepository userRepository;
+
+    public String approveRequest(String referenceNumber, Long inspectorUserId) {
+        return updateRequestStatus(referenceNumber, inspectorUserId, RequestStatus.APPROVED);
     }
 
-    public String rejectRequest(String referenceNumber) {
+    public String rejectRequest(String referenceNumber, Long inspectorUserId) {
+        return updateRequestStatus(referenceNumber, inspectorUserId, RequestStatus.REJECTED);
+    }
+
+    public String updateRequestStatus(String referenceNumber, Long inspectorUserId, RequestStatus requestStatus) {
         Request request = requestRepository.findByReferenceNumber(referenceNumber);
         request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
-        request.setStatus(RequestStatus.REJECTED);
+        request.setInspectorUser(userRepository.findById(inspectorUserId).get());
+        request.setStatus(requestStatus);
         return requestRepository.save(request).getOfficialReferenceNumber();
     }
 
@@ -48,14 +51,15 @@ public class RequestService {
         user.setId(userId);
         request.setUser(user);
         request.setName(res.getName());
-        request.setForm(res.getForm());
+        request.setForm(res.getJson());
         request.setDocument(res.getFile().getBytes());
         request.setDocumentType(res.getFile().getContentType());
+        request.setRequiredDocuments(res.getRequiredDocuments());
         return requestRepository.save(request).getReferenceNumber();
     }
 
     public List<Request> getRequestsByUserId(Long id) {
-        return requestRepository.findAllByUserIdOrderByReferenceNumberDesc(id);
+        return requestRepository.findAllByUserIdOrderByCreateDateTimeDesc(id);
     }
 
     public Request getRequest(Long userId, String referenceNumber) {
@@ -66,9 +70,4 @@ public class RequestService {
         return requestRepository.findByUserIdAndReferenceNumberOrOfficialReferenceNumber(userId, referenceNumber);
     }
 
-    public void requestAttachmentUpload(String referenceNumber, List<String> requestedAttachmentList) {
-//        Request request = requestRepository.findByReferenceNumber(referenceNumber);
-//        request.setAttachmentRequestList(requestedAttachmentList.stream().mapToResponse(s -> new RequestAttachmentRequest(null, referenceNumber, s)).collect(Collectors.toList()));
-//        requestRepository.save(request);
-    }
 }

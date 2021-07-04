@@ -21,6 +21,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 
 @Slf4j
 @Data
@@ -43,11 +44,11 @@ public class GoogleIdTokenAuthorizationFilter extends OncePerRequestFilter {
         if (authorizationHeader != null && authorizationHeader.startsWith("Bearer ")) {
             String jwt = authorizationHeader.substring(7);
             GoogleIdToken idToken = GoogleIdToken.parse(googleIdTokenVerifier.getJsonFactory(), jwt);
-//            try {
-            username = idToken.getPayload().getEmail();//googleIdTokenVerifier.verify(idToken) ? idToken.getPayload().getEmail() : null;
-//            } catch (GeneralSecurityException e) {
-//                log.error("Token validation exception", e);
-//            }
+            try {
+                username = googleIdTokenVerifier.verify(idToken) ? idToken.getPayload().getEmail() : null;
+            } catch (GeneralSecurityException e) {
+                log.error("Token validation exception", e);
+            }
             if (username != null && !userService.existsByEmail(username)) {
                 storeUser(idToken.getPayload());
             }

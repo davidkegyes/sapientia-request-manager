@@ -10,7 +10,7 @@ public class RequestRequest {
 
     private Integer templateId;
     private String name;
-    private String form;
+    private String json;
     private List<String> requiredDocuments;
     private MultipartFile file;
 

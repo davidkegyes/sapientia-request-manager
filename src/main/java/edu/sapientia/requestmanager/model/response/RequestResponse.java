@@ -1,11 +1,6 @@
 package edu.sapientia.requestmanager.model.response;
 
 import lombok.Data;
-import org.apache.logging.log4j.util.Strings;
-import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.UpdateTimestamp;
-import org.springframework.util.CollectionUtils;
-import org.springframework.util.StringUtils;
 
 import javax.persistence.Column;
 import javax.persistence.Lob;
@@ -23,15 +18,17 @@ public class RequestResponse {
 
     private String status;
 
-    @CreationTimestamp
     private LocalDateTime createDateTime;
 
-    @UpdateTimestamp
     private LocalDateTime updateDateTime;
 
-//    private List<String> attachmentRequestList;
-
     private String documentType;
+
+    private UserInfoResponse user;
+
+    private UserInfoResponse inspectorUser;
+
+    private List<String> requiredDocuments;
 
     @Lob
     @Column(columnDefinition = "BLOB")

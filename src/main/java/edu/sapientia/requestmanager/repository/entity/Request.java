@@ -11,24 +11,28 @@ import org.hibernate.annotations.UpdateTimestamp;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.List;
 
 @Data
 @Entity(name = "Request")
 @Table(name = "request")
-//@IdClass(RequestId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode
 public class Request implements Serializable {
 
-//    @Id
     @Column(name = "id")
     private Long id;
 
     @OneToOne
     @JoinColumn(name = "user_id")
     private User user;
+
+    @OneToOne
+    @JoinColumn(name = "inspector_user_id")
+    private User inspectorUser;
 
     @Id
     @GeneratedValue(generator = "UUID")
@@ -48,9 +52,11 @@ public class Request implements Serializable {
     private RequestStatus status = RequestStatus.NEW;
 
     @CreationTimestamp
+    @Column(nullable = false, name = "create_date_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime createDateTime;
 
     @UpdateTimestamp
+    @Column(nullable = false, name = "update_date_time", columnDefinition = "TIMESTAMP")
     private LocalDateTime updateDateTime;
 
     private String documentType;

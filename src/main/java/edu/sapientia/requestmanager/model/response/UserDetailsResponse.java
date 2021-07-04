@@ -8,7 +8,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Data
-public class UserResponse implements Serializable {
+public class UserDetailsResponse implements Serializable {
 
     private int id;
     private String neptunCode;

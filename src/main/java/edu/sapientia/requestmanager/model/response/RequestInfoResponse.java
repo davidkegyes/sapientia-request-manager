@@ -8,6 +8,10 @@ import java.util.List;
 @Data
 public class RequestInfoResponse {
 
+    private UserInfoResponse user;
+
+    private UserInfoResponse inspectorUser;
+
     private String referenceNumber;
 
     private String officialReferenceNumber;

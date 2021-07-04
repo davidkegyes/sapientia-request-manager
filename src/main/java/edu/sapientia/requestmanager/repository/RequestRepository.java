@@ -8,7 +8,7 @@ import java.util.List;
 
 public interface RequestRepository extends JpaRepository<Request, Long> {
 
-    List<Request> findAllByUserIdOrderByReferenceNumberDesc(Long userId);
+    List<Request> findAllByUserIdOrderByCreateDateTimeDesc(Long userId);
 
     Request findByUserIdAndReferenceNumber(Long userId, String referenceNumber);
 

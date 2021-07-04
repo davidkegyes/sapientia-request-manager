@@ -4,6 +4,7 @@ import edu.sapientia.requestmanager.model.response.RequestInfoResponse;
 import edu.sapientia.requestmanager.model.response.RequestResponse;
 import edu.sapientia.requestmanager.repository.entity.Request;
 import org.mapstruct.Mapper;
+import org.mapstruct.Mapping;
 import org.mapstruct.NullValueCheckStrategy;
 import org.springframework.stereotype.Service;
 
