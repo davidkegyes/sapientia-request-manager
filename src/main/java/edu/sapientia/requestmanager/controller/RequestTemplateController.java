@@ -6,6 +6,7 @@ import edu.sapientia.requestmanager.model.request.RequestTemplateRequest;
 import edu.sapientia.requestmanager.service.RequestTemplateService;
 import lombok.Data;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 @Data
@@ -31,12 +32,13 @@ public class RequestTemplateController {
     }
 
     @PostMapping("/save")
+    @PreAuthorize("hasAuthority('EDIT_APPLICATION_TEMPLATE')")
     public ResponseEntity saveTemplate(@RequestBody RequestTemplateRequest requestTemplateRequest) {
-        return ResponseEntity.ok(
-                requestTemplateService.save(requestMapper.mapToEntity(requestTemplateRequest)));
+        return ResponseEntity.ok(requestTemplateService.save(requestMapper.mapToEntity(requestTemplateRequest)));
     }
 
     @DeleteMapping("/delete/{uuid}")
+    @PreAuthorize("hasAuthority('DELETE_APPLICATION_TEMPLATE')")
     public ResponseEntity deleteTemplate(@PathVariable String uuid){
         requestTemplateService.deleteByUuid(uuid);
         return ResponseEntity.accepted().build();

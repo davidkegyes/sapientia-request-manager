@@ -6,9 +6,11 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-public interface RequestRepository extends JpaRepository<Request, Long> {
+public interface RequestRepository extends JpaRepository<Request, String> {
 
     List<Request> findAllByUserIdOrderByCreateDateTimeDesc(Long userId);
+
+    List<Request> findAllByOrderByCreateDateTimeDesc();
 
     Request findByUserIdAndReferenceNumber(Long userId, String referenceNumber);
 

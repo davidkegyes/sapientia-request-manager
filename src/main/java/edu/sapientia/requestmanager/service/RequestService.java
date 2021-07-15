@@ -62,12 +62,16 @@ public class RequestService {
         return requestRepository.findAllByUserIdOrderByCreateDateTimeDesc(id);
     }
 
-    public Request getRequest(Long userId, String referenceNumber) {
-        return requestRepository.findByUserIdAndReferenceNumber(userId, referenceNumber);
+    public List<Request> getAllRequests() {
+        return requestRepository.findAllByOrderByCreateDateTimeDesc();
     }
 
     public Request findRequest(Long userId, String referenceNumber) {
         return requestRepository.findByUserIdAndReferenceNumberOrOfficialReferenceNumber(userId, referenceNumber);
+    }
+
+    public Request findRequest(String referenceNumber) {
+        return requestRepository.findByReferenceNumber(referenceNumber);
     }
 
 }

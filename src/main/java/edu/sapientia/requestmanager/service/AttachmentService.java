@@ -6,6 +6,7 @@ import lombok.Data;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Data
 @Service
@@ -29,5 +30,9 @@ public class AttachmentService {
     public void deleteAttachment(String uuid) {
         attachmentRepository.deleteByUuid(uuid);
 
+    }
+
+    public Optional<Attachment> findByReferenceId(String referenceNumber) {
+        return attachmentRepository.findById(referenceNumber);
     }
 }

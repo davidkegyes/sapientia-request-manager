@@ -13,12 +13,10 @@ import java.time.LocalDateTime;
 @Data
 @Entity
 @Table(name = "attachment")
-@IdClass(AttachmentId.class)
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @EqualsAndHashCode
 public class Attachment implements Serializable {
 
-    @Id
     @Column(name = "id")
     private Long id;
 

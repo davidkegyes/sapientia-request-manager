@@ -8,7 +8,7 @@ import java.util.List;
 @Data
 public class RequestRequest {
 
-    private Integer templateId;
+    private String templateId;
     private String name;
     private String json;
     private List<String> requiredDocuments;
