@@ -30,13 +30,13 @@ public class RequestController {
     @PostMapping(value = "/request/approve/{referenceNumber}")
     @PreAuthorize("hasAuthority('APPROVE_APPLICATION')")
     public ResponseEntity approveRequest(@PathVariable String referenceNumber, Authentication authentication) {
-        return ResponseEntity.ok(requestService.approveRequest(referenceNumber, ((AuthorizedUser) authentication.getPrincipal()).getId()));
+        return ResponseEntity.ok(requestMapper.mapToRequestInfoResponse(requestService.approveRequest(referenceNumber, ((AuthorizedUser) authentication.getPrincipal()).getId())));
     }
 
     @PostMapping(value = "/request/reject/{referenceNumber}")
     @PreAuthorize("hasAuthority('REJECT_APPLICATION')")
     public ResponseEntity rejectRequest(@PathVariable String referenceNumber, Authentication authentication) {
-        return ResponseEntity.ok(requestService.rejectRequest(referenceNumber, ((AuthorizedUser) authentication.getPrincipal()).getId()));
+        return ResponseEntity.ok(requestMapper.mapToRequestInfoResponse(requestService.rejectRequest(referenceNumber, ((AuthorizedUser) authentication.getPrincipal()).getId())));
     }
 
     @PostMapping(value = "/request/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)

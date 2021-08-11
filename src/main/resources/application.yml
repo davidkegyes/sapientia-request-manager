@@ -1,5 +1,7 @@
 server:
   port: 8181
+ui:
+  host: http://localhost:3000
 spring:
   config:
     activate:
@@ -11,6 +13,20 @@ spring:
     open-in-view: false
     hibernate:
       use-new-id-generator-mappings: false
+  mail:
+    host: smtp.gmail.com
+    username: noreplyrequestmanager@gmail.com
+    password: requestmanager
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          starttls:
+            enable: true
+          timeout: 5000
+          writetimeout: 5000
 google:
   oauth2:
     client-id: 746309681103-5jb4g12c5kn08olp6j5ck7v5bm9630ve.apps.googleusercontent.com
@@ -20,6 +36,8 @@ logging:
 ---
 server:
   port: 80
+ui:
+  host: https://sapientia-request-manager-ui.herokuapp.com
 spring:
   config:
     activate:
@@ -37,6 +55,23 @@ spring:
         format_sql: true
         jdbc:
           time_zone: UTC
+  mail:
+    host: smtp.gmail.com
+    username: noreplyrequestmanager@gmail.com
+    password: requestmanager
+    port: 587
+    properties:
+      mail:
+        smtp:
+          auth: true
+          connectiontimeout: 5000
+          starttls:
+            enable: true
+          timeout: 5000
+          writetimeout: 5000
+
 google:
   oauth2:
     client-id: 746309681103-5jb4g12c5kn08olp6j5ck7v5bm9630ve.apps.googleusercontent.com
+
+

@@ -64,5 +64,7 @@ public class RequestTemplate implements Serializable {
         private String hint;
         private String error;
         private String value;
+        private Integer min;
+        private Integer max;
     }
 }

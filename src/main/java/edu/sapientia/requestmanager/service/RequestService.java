@@ -10,11 +10,13 @@ import edu.sapientia.requestmanager.repository.entity.Request;
 import edu.sapientia.requestmanager.repository.entity.User;
 import lombok.Data;
 import lombok.SneakyThrows;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Data
+@Data @Slf4j
 @Service
 public class RequestService {
 
@@ -28,20 +30,40 @@ public class RequestService {
 
     private final UserRepository userRepository;
 
-    public String approveRequest(String referenceNumber, Long inspectorUserId) {
+    private final MailService mailService;
+
+    @Value("${ui.host}")
+    private String uiHost;
+
+    public Request approveRequest(String referenceNumber, Long inspectorUserId) {
         return updateRequestStatus(referenceNumber, inspectorUserId, RequestStatus.APPROVED);
     }
 
-    public String rejectRequest(String referenceNumber, Long inspectorUserId) {
+    public Request rejectRequest(String referenceNumber, Long inspectorUserId) {
         return updateRequestStatus(referenceNumber, inspectorUserId, RequestStatus.REJECTED);
     }
 
-    public String updateRequestStatus(String referenceNumber, Long inspectorUserId, RequestStatus requestStatus) {
+    public Request updateRequestStatus(String referenceNumber, Long inspectorUserId, RequestStatus requestStatus) {
         Request request = requestRepository.findByReferenceNumber(referenceNumber);
         request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
         request.setInspectorUser(userRepository.findById(inspectorUserId).get());
         request.setStatus(requestStatus);
-        return requestRepository.save(request).getOfficialReferenceNumber();
+        String s = RequestStatus.APPROVED.equals(requestStatus) ? "ELFOGADVA" : "ELUTASÍTVA";
+        try {
+            StringBuilder body = new StringBuilder()
+                    .append("Kérése statusza módosult ").append(s)
+                    .append("\n\r")
+                    .append("\n\r")
+                    .append("Kérését fölülvizsgálta : ").append(request.getInspectorUser().getFirstname()).append(" ").append(request.getInspectorUser().getLastname())
+                    .append("\n\r")
+                    .append("\n\r")
+                    .append("Kérését megtekintheti itt: ").append(uiHost).append("/inspect/").append(request.getReferenceNumber());
+            mailService.sendMail(request.getUser().getEmail(), "Kérése statusza módosult " + s, body.toString());
+        } catch (Exception e) {
+            log.error("Error during email approval email notification", e);
+        }
+
+        return requestRepository.save(request);
     }
 
     @SneakyThrows
