@@ -1,6 +1,5 @@
 package edu.sapientia.requestmanager.repository;
 
-import edu.sapientia.requestmanager.model.RequestStatus;
 import edu.sapientia.requestmanager.repository.entity.Request;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -11,7 +10,9 @@ public interface RequestRepository extends JpaRepository<Request, String> {
 
     List<Request> findAllByUserIdOrderByCreateDateTimeDesc(Long userId);
 
-    List<Request> findByStatusNotOrderByCreateDateTimeDesc(RequestStatus status);
+    List<Request> findAllByOrderByCreateDateTimeDesc();
+
+    Request findByUserIdAndReferenceNumber(Long userId, String referenceNumber);
 
     Request findByReferenceNumber(String referenceNumber);
 

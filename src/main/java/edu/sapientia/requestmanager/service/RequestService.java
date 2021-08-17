@@ -13,7 +13,6 @@ import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import org.springframework.util.CollectionUtils;
 
 import java.util.List;
 
@@ -78,11 +77,6 @@ public class RequestService {
         request.setDocument(res.getFile().getBytes());
         request.setDocumentType(res.getFile().getContentType());
         request.setRequiredDocuments(res.getRequiredDocuments());
-        if (!CollectionUtils.isEmpty(request.getRequiredDocuments())){
-            request.setStatus(RequestStatus.INCOMPLETE);
-        } else {
-            request.setStatus(RequestStatus.NEW);
-        }
         return requestRepository.save(request).getReferenceNumber();
     }
 
@@ -90,8 +84,8 @@ public class RequestService {
         return requestRepository.findAllByUserIdOrderByCreateDateTimeDesc(id);
     }
 
-    public List<Request> getAllEligibleRequest() {
-        return requestRepository.findByStatusNotOrderByCreateDateTimeDesc(RequestStatus.INCOMPLETE);
+    public List<Request> getAllRequests() {
+        return requestRepository.findAllByOrderByCreateDateTimeDesc();
     }
 
     public Request findRequest(Long userId, String referenceNumber) {

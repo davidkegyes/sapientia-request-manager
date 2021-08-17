@@ -67,7 +67,7 @@ public class RequestController {
     @GetMapping("/request/listAll")
     @PreAuthorize("hasAuthority('VIEW_ALL_APPLICATIONS')")
     public ResponseEntity<List<RequestInfoResponse>> getAllRequests(Authentication authentication) {
-        return ResponseEntity.ok(requestMapper.mapToRequestInfoResponseList(requestService.getAllEligibleRequest()));
+        return ResponseEntity.ok(requestMapper.mapToRequestInfoResponseList(requestService.getAllRequests()));
     }
 
 }
