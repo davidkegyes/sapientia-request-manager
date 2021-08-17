@@ -31,8 +31,4 @@ public class AttachmentService {
         attachmentRepository.deleteByUuid(uuid);
 
     }
-
-    public Optional<Attachment> findByReferenceId(String referenceNumber) {
-        return attachmentRepository.findById(referenceNumber);
-    }
 }
