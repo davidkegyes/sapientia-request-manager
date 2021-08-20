@@ -11,14 +11,27 @@ import io.swagger.v3.oas.models.info.License;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.support.ResourceBundleMessageSource;
+import org.springframework.scheduling.annotation.EnableAsync;
 
 import java.util.Collections;
 
 @Configuration
+@EnableAsync
 public class SapientiaRequestManagerConfig {
 
     @Bean
-    public GoogleIdTokenVerifier googleIdTokenVerifier(@Value("${google.oauth2.client-id}") String clientId){
+    public ResourceBundleMessageSource messageSource() {
+
+        ResourceBundleMessageSource source = new ResourceBundleMessageSource();
+        source.setBasenames("messages");
+        source.setUseCodeAsDefaultMessage(true);
+
+        return source;
+    }
+
+    @Bean
+    public GoogleIdTokenVerifier googleIdTokenVerifier(@Value("${google.oauth2.client-id}") String clientId) {
         NetHttpTransport transport = new NetHttpTransport();
         JsonFactory jsonFactory = new GsonFactory();
 

@@ -11,13 +11,14 @@ import edu.sapientia.requestmanager.repository.entity.User;
 import lombok.Data;
 import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
-@Data @Slf4j
+@Data
+@Slf4j
 @Service
 public class RequestService {
 
@@ -31,10 +32,7 @@ public class RequestService {
 
     private final UserRepository userRepository;
 
-    private final MailService mailService;
-
-    @Value("${ui.host}")
-    private String uiHost;
+    private final NotificationService notificationService;
 
     public Request approveRequest(String referenceNumber, Long inspectorUserId) {
         return updateRequestStatus(referenceNumber, inspectorUserId, RequestStatus.APPROVED);
@@ -49,26 +47,20 @@ public class RequestService {
         request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
         request.setInspectorUser(userRepository.findById(inspectorUserId).get());
         request.setStatus(requestStatus);
-        String s = RequestStatus.APPROVED.equals(requestStatus) ? "ELFOGADVA" : "ELUTASÍTVA";
         try {
-            StringBuilder body = new StringBuilder()
-                    .append("Kérése statusza módosult ").append(s)
-                    .append("\n\r")
-                    .append("\n\r")
-                    .append("Kérését fölülvizsgálta : ").append(request.getInspectorUser().getFirstname()).append(" ").append(request.getInspectorUser().getLastname())
-                    .append("\n\r")
-                    .append("\n\r")
-                    .append("Kérését megtekintheti itt: ").append(uiHost).append("/inspect/").append(request.getReferenceNumber());
-            mailService.sendMail(request.getUser().getEmail(), "Kérése statusza módosult " + s, body.toString());
+            request = requestRepository.save(request);
+            Request finalRequest = request;
+            CompletableFuture.runAsync(() -> {
+                notificationService.sendRequestProcessedMail(finalRequest);
+            });
         } catch (Exception e) {
-            log.error("Error during email approval email notification", e);
+            log.error("Error during request status update", request.getReferenceNumber(), e);
         }
-
-        return requestRepository.save(request);
+        return request;
     }
 
     @SneakyThrows
-    public String saveRequestInfo(long userId, RequestRequest res) {
+    public String saveRequest(long userId, RequestRequest res) {
         Request request = new Request();
         User user = new User();
         user.setId(userId);
@@ -78,7 +70,7 @@ public class RequestService {
         request.setDocument(res.getFile().getBytes());
         request.setDocumentType(res.getFile().getContentType());
         request.setRequiredDocuments(res.getRequiredDocuments());
-        if (!CollectionUtils.isEmpty(request.getRequiredDocuments())){
+        if (!CollectionUtils.isEmpty(request.getRequiredDocuments())) {
             request.setStatus(RequestStatus.INCOMPLETE);
         } else {
             request.setStatus(RequestStatus.NEW);

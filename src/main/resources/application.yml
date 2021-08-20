@@ -1,7 +1,7 @@
 server:
   port: 8181
 ui:
-  host: http://localhost:3000
+  inspect-url: http://localhost:3000/inspect/
 spring:
   config:
     activate:
@@ -37,7 +37,7 @@ logging:
 server:
   port: 80
 ui:
-  host: https://sapientia-request-manager-ui.herokuapp.com
+  inspect-url: https://sapientia-request-manager-ui.herokuapp.com/inspect/
 spring:
   config:
     activate:

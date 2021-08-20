@@ -42,7 +42,7 @@ public class RequestController {
     @PostMapping(value = "/request/save", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     @PreAuthorize("hasAuthority('UPLOAD_APPLICATION')")
     public ResponseEntity saveRequest(@ModelAttribute RequestRequest request, Authentication authentication) {
-        return ResponseEntity.ok(requestService.saveRequestInfo(((AuthorizedUser) authentication.getPrincipal()).getId(), request));
+        return ResponseEntity.ok(requestService.saveRequest(((AuthorizedUser) authentication.getPrincipal()).getId(), request));
     }
 
     @GetMapping("/request/{referenceNumber}")
