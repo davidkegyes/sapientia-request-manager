@@ -15,7 +15,7 @@ public class OfficialRequestReferenceNumberService {
 
     public String getNewOfficialReferenceNumber(){
         String currentDate = DateTimeFormatter.ofPattern("uuuu-MM-dd").format(LocalDate.now());
-        Long count = requestRepository.countByOfficialReferenceNumberIsLike(currentDate);
+        Long count = requestRepository.countAllByOfficialReferenceNumberContaining(currentDate);
         return currentDate.concat("/").concat(String.valueOf(1L + count));
     }
 }
