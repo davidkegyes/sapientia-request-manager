@@ -9,9 +9,8 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 @Service
-@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS, uses = {RequestAttachmentMapper.class})
+@Mapper(nullValueCheckStrategy = NullValueCheckStrategy.ALWAYS)
 public interface RequestTemplateResponseMapper {
-
 
     RequestTemplateResponse map(RequestTemplate requestTemplate);
 
