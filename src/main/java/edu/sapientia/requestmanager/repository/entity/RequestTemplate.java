@@ -43,6 +43,7 @@ public class RequestTemplate implements Serializable {
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FormPart {
+        private String id;
         private String wrapper;
         private String style;
         private String type;
@@ -58,6 +59,7 @@ public class RequestTemplate implements Serializable {
     @Data
     @JsonInclude(JsonInclude.Include.NON_NULL)
     public static class FormPartVariable {
+        private String id;
         private String name;
         private String type;
         private String placeholder;
