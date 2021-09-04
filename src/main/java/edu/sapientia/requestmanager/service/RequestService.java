@@ -50,9 +50,10 @@ public class RequestService {
 
     public Request updateRequestStatus(String referenceNumber, Long inspectorUserId, RequestStatus requestStatus) {
         Request request = requestRepository.findByReferenceNumber(referenceNumber);
-        request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
-        if (inspectorUserId != null && (RequestStatus.REJECTED.equals(requestStatus) || RequestStatus.APPROVED.equals(requestStatus))) {
-            request.setInspectorUser(userRepository.findById(inspectorUserId).get());
+        request.setInspectorUser(inspectorUserId != null ? userRepository.findById(inspectorUserId).get() : null);
+        if ((!RequestStatus.REJECTED.equals(request.getStatus()) && !RequestStatus.APPROVED.equals(request.getStatus()))
+                && (RequestStatus.REJECTED.equals(requestStatus) || RequestStatus.APPROVED.equals(requestStatus))) {
+            request.setOfficialReferenceNumber(officialRequestReferenceNumberService.getNewOfficialReferenceNumber());
         }
         request.setStatus(requestStatus);
         try {
