@@ -26,7 +26,6 @@ public class SapientiaRequestManagerConfig {
 
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
         source.setBasenames("messages");
-        source.setDefaultEncoding("utf-8");
         source.setUseCodeAsDefaultMessage(true);
 
         return source;
