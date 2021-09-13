@@ -9,6 +9,7 @@ import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.web.servlet.server.Encoding;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
@@ -25,6 +26,7 @@ public class SapientiaRequestManagerConfig {
 
         ResourceBundleMessageSource source = new ResourceBundleMessageSource();
         source.setBasenames("messages");
+        source.setDefaultEncoding("utf-8");
         source.setUseCodeAsDefaultMessage(true);
 
         return source;
